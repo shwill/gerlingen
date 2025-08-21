@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerlingen & Stuttgart - Guide für Renate und Christian</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+            border-left: 5px solid #3498db;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 20px;
+        }
+        #map {
+            height: 600px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .location-category {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .location-item {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .location-item h4 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .transport-info {
+            background-color: #e8f4f8;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .legend {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin: 10px 0;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 15px;
+        }
+        .home-marker { color: #e74c3c; }
+        .restaurant-marker { color: #f39c12; }
+        .attraction-marker { color: #3498db; }
+        .walk-marker { color: #27ae60; }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .special-tip {
+            background-color: #e7f3ff;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+        }
+        @media print {
+            #map { height: 400px; }
+            body { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Herzlich willkommen in Gerlingen, liebe Renate und Christian!</h1>
+        <p style="text-align: center; font-style: italic;">Ein persönlicher Guide für euren Aufenthalt in der neuen Heimat</p>
+        
+        <div class="legend">
+            <strong>Legende:</strong>
+            <span class="legend-item">🏠 <span class="home-marker">Panoramastraße</span></span>
+            <span class="legend-item">🍽️ <span class="restaurant-marker">Restaurants</span></span>
+            <span class="legend-item">🏛️ <span class="attraction-marker">Sehenswürdigkeiten</span></span>
+            <span class="legend-item">🚶 <span class="walk-marker">Spaziergänge</span></span>
+        </div>
+
+        <div id="map"></div>
+
+        <h2>📍 In Gerlingen</h2>
+        
+        <div class="location-category">
+            <h3>🍽️ Restaurants & Cafés</h3>
+            
+            <div class="location-item">
+                <h4>Restaurant Ho (Vietnamesisch)</h4>
+                <p>Authentische vietnamesische Küche in gemütlicher Atmosphäre. Die Pho-Suppe ist besonders zu empfehlen!</p>
+                <div class="transport-info">📍 Fußweg von der Panoramastr.: ca. 10-15 Min. durch die Innenstadt</div>
+            </div>
+            
+            <div class="location-item">
+                <h4>Maraz</h4>
+                <p>Perfekt für einen Absacker am Abend. Gemütliche Bar-Atmosphäre mit guter Weinauswahl.</p>
+                <div class="transport-info">📍 Direkt im Ortszentrum beim Marktplatz</div>
+            </div>
+            
+            <div class="location-item">
+                <h4>Gasthaus Fäßle</h4>
+                <p>Ausgezeichnete schwäbische Hausmannskost in urig-gemütlicher Atmosphäre. Hier gibt's die besten Maultaschen und Spätzle!</p>
+                <div class="transport-info">📍 Hauptstraße, ca. 10 Min. Fußweg vom Marktplatz</div>
+            </div>
+            
+            <div class="location-item">
+                <h4>Weinwelt Gerlingen</h4>
+                <p>Große Auswahl an regionalen und internationalen Weinen. Die Inhaber beraten sehr kompetent!</p>
+                <div class="transport-info">📍 Nähe Marktplatz, ca. 8 Min. Fußweg von euch</div>
+            </div>
+        </div>
+
+        <div class="location-category">
+            <h3>🚶 Spaziergänge & Natur</h3>
+            
+            <div class="location-item">
+                <h4>Schloss Solitude</h4>
+                <p>Prächtiges Barockschloss mit herrlichem Ausblick über Stuttgart. Der Schlosspark lädt zu Spaziergängen ein.</p>
+                <div class="transport-info">
+                    🚗 Mit Auto: 10 Min. über Solitudestraße zum Parkplatz<br>
+                    🚌 Bus 92 bis "Schloss Solitude"<br>
+                    💡 Vom Parkplatz ca. 5 Min. Fußweg zum Schloss
+                </div>
+            </div>
+            
+            <div class="location-item" style="border: 2px solid #27ae60;">
+                <h4>🐕 Bärenschlössle und Bärensee <span class="highlight">Perfekt mit Hund!</span></h4>
+                <p>Wunderschöner Spaziergang für euch und den Hund! Vom Parkplatz Wildparkstraße aus habt ihr endlose Wandermöglichkeiten durch den Wald. Das Bärenschlössle ist ein romantisches kleines Schlösschen am See.</p>
+                <p><strong>Zwei Parkmöglichkeiten:</strong></p>
+                <ul>
+                    <li><strong>Wildparkstraße Parkplatz</strong> - von hier 5 Min. zum Bärenschlössle hinunter</li>
+                    <li><strong>Direkt am Bärensee</strong> - für kürzere Spaziergänge</li>
+                </ul>
+                <div class="transport-info">
+                    🚗 Mit Auto: nur 5 Min. von euch!<br>
+                    🚶 Ab Parkplatz: beliebig lange Wanderungen möglich<br>
+                    💡 Tipp: Am Wochenende früh kommen!
+                </div>
+            </div>
+
+            <div class="location-item">
+                <h4>Siebenmühlental</h4>
+                <p>Romantisches Tal mit historischen Mühlen. Das früher Reichenbachtal genannte Tal beherbergte einst sieben Mühlen (heute neun). Ein wunderschöner Wanderweg führt entlang des Reichenbachs durch das Tal.</p>
+                <div class="transport-info">
+                    🚗 Mit Auto: ca. 25 Min. Richtung Musberg/Leinfelden-Echterdingen<br>
+                    💡 Perfekt für einen Halbtagesausflug
+                </div>
+            </div>
+        </div>
+
+        <h2>🏙️ In Stuttgart</h2>
+        
+        <div class="location-category">
+            <h3>🏛️ Sehenswürdigkeiten & Aussichtspunkte</h3>
+            
+            <div class="location-item">
+                <h4>Markthalle Stuttgart</h4>
+                <p>Wunderschöne Jugendstilhalle von 1914. Über 30 Händler mit frischen Lebensmitteln und Delikatessen aus aller Welt. Perfekt für einen gemütlichen Bummel!</p>
+                <p><strong>Öffnungszeiten:</strong> Mo-Fr 7:30-18:30, Sa 7:00-17:00</p>
+                <div class="transport-info">
+                    🚇 U6 von <strong>Gerlingen Marktplatz</strong> direkt bis <strong>Schlossplatz</strong><br>
+                    ⏱️ Fahrzeit: ca. 20 Min. (ohne Umsteigen!)<br>
+                    🚶 5 Min. Fußweg vom Schlossplatz
+                </div>
+            </div>
+            
+            <div class="location-item">
+                <h4>Staatsgalerie Stuttgart</h4>
+                <p>Eine der bedeutendsten Kunstsammlungen Deutschlands. Von alten Meistern bis zur Moderne. Der Skulpturengarten ist besonders sehenswert!</p>
+                <p><strong>Tipp:</strong> Dienstags freier Eintritt in die Sammlung!</p>
+                <div class="transport-info">
+                    🚇 U6 von Gerlingen Marktplatz bis Hauptbahnhof, umsteigen in U5/U6/U7 bis Staatsgalerie<br>
+                    ⏱️ Gesamtfahrzeit: ca. 20 Min.
+                </div>
+            </div>
+
+            <div class="location-item">
+                <h4>Birkenkopf (Monte Scherbelino)</h4>
+                <p>Ein bewegender Ort mit fantastischem Panoramablick über Stuttgart. Der Berg besteht aus Trümmern des Zweiten Weltkriegs. Perfekt für einen Sonnenuntergang!</p>
+                <div class="special-tip">
+                    <strong>Insider-Tipp:</strong> Picknicksachen mitnehmen und den Sonnenuntergang genießen!
+                </div>
+                <div class="transport-info">
+                    🚗 Parkplatz an der Birkenkopfstraße<br>
+                    🚶 Über die Straße und stetig bergauf (ca. 15 Min.)<br>
+                    💡 Die Mühe lohnt sich - traumhafter Blick!
+                </div>
+            </div>
+        </div>
+
+        <div class="location-category">
+            <h3>🍽️ Besondere Restaurants in Stuttgart</h3>
+            
+            <div class="location-item">
+                <h4>Injeera (Afrikanisch)</h4>
+                <p>Authentische afrikanische Küche. War früher sehr gut, ist inzwischen umgezogen. Die <strong>Probierplatte für zwei Personen</strong> ist sehr zu empfehlen - auch vegetarisch lecker!</p>
+                <div class="special-tip">
+                    <strong>Tipp:</strong> Keine Scheu haben, mit den Fingern zu essen - so ist es traditionell!
+                </div>
+                <div class="transport-info">
+                    🚇 U-Bahn bis Charlottenplatz<br>
+                    🚶 Ca. 10 Min. Fußweg
+                </div>
+            </div>
+
+            <div class="location-item">
+                <h4>MISIK (Koreanisch)</h4>
+                <p>Koreanische Feinkost vom Feinsten! Wenn ihr mal etwas ganz Besonderes probieren möchtet, ist das eine absolute Empfehlung. Wahnsinnig lecker!</p>
+                <div class="transport-info">
+                    🚇 S-Bahn bis Schwabstraße<br>
+                    🚶 Dann noch etwas laufen (ca. 10 Min.)
+                </div>
+            </div>
+        </div>
+
+        <h2>💡 Praktische Tipps für Renate und Christian</h2>
+        
+        <div class="location-category">
+            <h3>🔊 Alexa - Eure Sprachassistentin für die Beleuchtung</h3>
+            <p>In der Wohnung ist <strong>Alexa</strong> installiert - das ist Amazons Sprachassistentin, die auf Zuruf reagiert. Da die Lichtschalter in der Wohnung etwas wirr angeordnet sind, ist es viel einfacher, die Beleuchtung per Sprachbefehl zu steuern!</p>
+            
+            <div class="special-tip">
+                <h4>So funktioniert's - einfach sagen:</h4>
+                <ul>
+                    <li><strong>"Alexa, Zuhause an"</strong> - schaltet die Hauptbeleuchtung ein</li>
+                    <li><strong>"Alexa, alle Lichter aus"</strong> - perfekt vorm Schlafengehen</li>
+                    <li><strong>"Alexa, Schlafzimmer an/aus"</strong> - steuert das Schlafzimmerlicht</li>
+                    <li><strong>"Alexa, Wohnzimmer an/aus"</strong> - für die Wohnzimmerbeleuchtung</li>
+                    <li><strong>"Alexa, Nachttisch an/aus"</strong> - die Nachttischlampe</li>
+                </ul>
+                
+                <h4>Weitere nützliche Befehle:</h4>
+                <ul>
+                    <li><strong>"Alexa, dimme das Wohnzimmer auf 50%"</strong> - für gemütliches Licht</li>
+                    <li><strong>"Alexa, gute Nacht"</strong> - schaltet alle Lichter aus</li>
+                    <li><strong>"Alexa, spiel romantische Musik"</strong> - für die Stimmung</li>
+                    <li><strong>"Alexa, spiel Radio SWR3"</strong> - für lokale Nachrichten</li>
+                    <li><strong>"Alexa, wie wird das Wetter heute?"</strong></li>
+                    <li><strong>"Alexa, stelle einen Timer auf 10 Minuten"</strong> - praktisch beim Kochen</li>
+                </ul>
+                <p style="margin-top: 10px;"><em>Tipp: Alexa versteht euch am besten, wenn ihr deutlich sprecht und nach "Alexa" eine kleine Pause macht!</em></p>
+            </div>
+        </div>
+        
+        <div class="location-category">
+            <h3>🚇 Öffentliche Verkehrsmittel - U6 Fahrplan</h3>
+            <div class="special-tip">
+                <h4>U6 von Gerlingen Marktplatz nach Stuttgart Schlossplatz</h4>
+                <p><strong>Betriebszeiten:</strong></p>
+                <ul>
+                    <li>Erste Fahrt ab Gerlingen: ca. 3:43 Uhr</li>
+                    <li>Letzte Fahrt ab Gerlingen: ca. 0:06 Uhr</li>
+                    <li>Taktung: alle 10-20 Minuten (je nach Tageszeit)</li>
+                    <li>Fahrzeit zum Schlossplatz: ca. 20 Minuten (direkt, ohne Umsteigen!)</li>
+                </ul>
+                <p><strong>Besonderheiten:</strong></p>
+                <ul>
+                    <li>Freitags und vor Feiertagen: 80m lange Doppelzüge für mehr Platz</li>
+                    <li>Nachts übernimmt der Nachtbus N3 die Strecke</li>
+                </ul>
+            </div>
+            <ul>
+                <li><strong>U6 ab Gerlingen Marktplatz:</strong> Eure direkte Verbindung nach Stuttgart!</li>
+                <li><strong>Direkt zum Schlossplatz:</strong> Mit der U6 ohne Umsteigen - perfekt für die Markthalle</li>
+                <li><strong>Tageskarte:</strong> Lohnt sich ab 3 Fahrten</li>
+                <li><strong>Seniorentickets:</strong> Ab 60 Jahren gibt es vergünstigte Tarife</li>
+                <li><strong>VVS-App:</strong> Für aktuelle Abfahrtszeiten und Live-Infos</li>
+            </ul>
+            
+            <h3>🐕 Mit dem Hund unterwegs</h3>
+            <ul>
+                <li><strong>Bärensee/Wildpark:</strong> Das absolute Highlight für Hundespaziergänge!</li>
+                <li>In der U-Bahn sind Hunde erlaubt (Leinenpflicht)</li>
+                <li>Siebenmühlental: Auch sehr hundefreundlich</li>
+            </ul>
+
+            <h3>🚗 Parken in Stuttgart</h3>
+            <ul>
+                <li>Schloss Solitude, Bärensee und Birkenkopf haben kostenlose Parkplätze</li>
+                <li>Innenstadt: Park&Ride empfohlen (z.B. Feuerbach)</li>
+                <li>Samstags oft kostenloses Parken</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Initialisiere die Karte
+        var map = L.map('map').setView([48.785, 9.08], 11);
+
+        // Füge OpenStreetMap Tiles hinzu
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Custom Icons
+        var homeIcon = L.divIcon({
+            html: '<div style="background-color: #e74c3c; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">🏠</div>',
+            iconSize: [30, 30],
+            className: 'custom-div-icon'
+        });
+
+        var restaurantIcon = L.divIcon({
+            html: '<div style="background-color: #f39c12; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">🍽️</div>',
+            iconSize: [25, 25],
+            className: 'custom-div-icon'
+        });
+
+        var attractionIcon = L.divIcon({
+            html: '<div style="background-color: #3498db; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">🏛️</div>',
+            iconSize: [25, 25],
+            className: 'custom-div-icon'
+        });
+
+        var walkIcon = L.divIcon({
+            html: '<div style="background-color: #27ae60; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">🚶</div>',
+            iconSize: [25, 25],
+            className: 'custom-div-icon'
+        });
+
+        var dogIcon = L.divIcon({
+            html: '<div style="background-color: #27ae60; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; border: 3px solid #f39c12; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">🐕</div>',
+            iconSize: [30, 30],
+            className: 'custom-div-icon'
+        });
+
+        var parkIcon = L.divIcon({
+            html: '<div style="background-color: #95a5a6; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; border: 2px solid white;">P</div>',
+            iconSize: [20, 20],
+            className: 'custom-div-icon'
+        });
+
+        // Markierungen hinzufügen
+        // Zuhause - Panoramastraße 19, Gerlingen
+        L.marker([48.793531438607204, 9.063234717139228], {icon: homeIcon})
+            .addTo(map)
+            .bindPopup('<b>Panoramastraße 19</b><br>Euer Zuhause');
+
+        // Restaurants in Gerlingen
+        L.marker([48.79988310065508, 9.061634024715064], {icon: restaurantIcon})
+            .addTo(map)
+            .bindPopup('<b>Restaurant Ho</b><br>Vietnamesische Küche');
+
+        L.marker([48.79982430114488, 9.06326943347165], {icon: restaurantIcon})
+            .addTo(map)
+            .bindPopup('<b>Maraz</b><br>Bar für Absacker');
+
+        L.marker([48.79861890825838, 9.060853323025013], {icon: restaurantIcon})
+            .addTo(map)
+            .bindPopup('<b>Gasthaus Fäßle</b><br>Schwäbische Hausmannskost');
+
+        L.marker([48.798217751279545, 9.062904632446292], {icon: restaurantIcon})
+            .addTo(map)
+            .bindPopup('<b>Weinwelt Gerlingen</b><br>Weinhandlung');
+
+        // Spaziergänge und Natur
+        // Solitude Parkplatz
+        L.marker([48.784405737444665, 9.09056833781996], {icon: parkIcon})
+            .addTo(map)
+            .bindPopup('<b>Solitude Parkplatz</b>');
+
+        // Schloss Solitude
+        L.marker([48.78709422066824, 9.084278908819496], {icon: walkIcon})
+            .addTo(map)
+            .bindPopup('<b>Schloss Solitude</b><br>Barockschloss mit Ausblick');
+
+        // Bärensee Parkplätze
+        L.marker([48.777551104466184, 9.090131849830406], {icon: dogIcon})
+            .addTo(map)
+            .bindPopup('<b>Wildparkstraße Parkplatz</b><br>5 Min. zum Bärenschlössle<br>Perfekt mit Hund! 🐕');
+
+        L.marker([48.75629088118401, 9.092204149611229], {icon: parkIcon})
+            .addTo(map)
+            .bindPopup('<b>Parkplatz direkt am Bärensee</b>');
+
+        // Siebenmühlental
+        L.marker([48.66593486969945, 9.143847662498173], {icon: walkIcon})
+            .addTo(map)
+            .bindPopup('<b>Siebenmühlental</b><br>Romantisches Tal mit historischen Mühlen');
+
+        // Stuttgart Sehenswürdigkeiten
+        L.marker([48.77620534141199, 9.179403103309795], {icon: attractionIcon})
+            .addTo(map)
+            .bindPopup('<b>Markthalle</b><br>Jugendstil & Delikatessen');
+
+        L.marker([48.780184765730276, 9.18660695046616], {icon: attractionIcon})
+            .addTo(map)
+            .bindPopup('<b>Staatsgalerie</b><br>Kunstmuseum');
+
+        // Birkenkopf
+        L.marker([48.76501136061374, 9.134879104612622], {icon: walkIcon})
+            .addTo(map)
+            .bindPopup('<b>Birkenkopf Parkplatz</b><br>Monte Scherbelino - Panoramablick');
+
+        // Restaurants Stuttgart
+        L.marker([48.774257847737196, 9.171027972321308], {icon: restaurantIcon})
+            .addTo(map)
+            .bindPopup('<b>Injeera</b><br>Afrikanisches Restaurant');
+
+        L.marker([48.77328576586104, 9.157703758359132], {icon: restaurantIcon})
+            .addTo(map)
+            .bindPopup('<b>MISIK</b><br>Koreanische Feinkost');
+
+        // U-Bahn Station Marktplatz
+        L.marker([48.79994, 9.06667], {icon: L.divIcon({
+            html: '<div style="background-color: #3498db; padding: 5px; border-radius: 3px; color: white; font-weight: bold; font-size: 12px;">U6</div>',
+            iconSize: [30, 20],
+            className: 'custom-div-icon'
+        })})
+            .addTo(map)
+            .bindPopup('<b>U6 Gerlingen Marktplatz</b><br>Eure U-Bahn Station');
+
+        // Zeichne wichtige Verbindungen
+        // Verbindung Haus zu Wildparkstraße (5 Min mit Auto)
+        L.polyline([
+            [48.793531438607204, 9.063234717139228],
+            [48.777551104466184, 9.090131849830406]
+        ], {
+            color: '#e74c3c',
+            weight: 2,
+            opacity: 0.5,
+            dashArray: '5, 10'
+        }).addTo(map).bindPopup('5 Min. mit dem Auto zum Wildpark');
+
+    </script>
+</body>
+</html>
